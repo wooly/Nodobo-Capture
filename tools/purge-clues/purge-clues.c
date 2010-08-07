@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <sqlite3.h>
 
-#define DATABASE_PATH "/aios/context/clues.sqlite3"
+#define DATABASE_PATH "/nodobo/capture/clues.sqlite3"
 #define DELETE_STATEMENT "delete from clues;"
 
 int main(int argc, char * argv[])
