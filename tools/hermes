@@ -1,0 +1,22 @@
+#!/bin/sh
+
+if [ "x$1" == "x" ]    
+    then
+    echo "Usage: hermes <directory>"
+    exit 1
+fi
+
+if [ ! -d $1 ]
+    then
+    mkdir $1
+fi
+cd $1
+
+adb pull /nodobo/capture .
+
+for file in *.lz
+do
+    echo "Converting $file to png"
+    lztopng $file 240 400
+    rm $file
+done
