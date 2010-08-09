@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.nodobo.capture"
+      android:versionCode="1"
+      android:versionName="1.0">
+      
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    
+    <application android:label="@string/app_name" android:icon="@drawable/icon">
+        <service android:name="ContextCapture"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </service>    	
+    
+        <receiver android:name=".ActivityReceiver">
+            <intent-filter>
+                <action android:name="com.nodobo.intent.activity" />
+            </intent-filter>
+        </receiver>
+        
+        <receiver android:name=".BatteryStateReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BATTERY_CHANGED" />
+            </intent-filter>
+        </receiver>
+        
+        <receiver android:name=".BootCompletedReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        
+        <receiver android:name=".ChargingStateReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
+        
+        <receiver android:name=".ImeReceiver">
+            <intent-filter>
+                <action android:name="com.nodobo.intent.ime.visible" />
+                <action android:name="com.nodobo.intent.ime.invisible" />
+                <action android:name="com.nodobo.intent.ime.keypress" />
+            </intent-filter>
+        </receiver>
+        
+        <receiver android:name=".InteractionReceiver">
+            <intent-filter>
+                <action android:name="com.nodobo.intent.hardkey" />
+                <action android:name="com.nodobo.intent.softkey" />
+                <action android:name="com.nodobo.intent.touch" />
+            </intent-filter>
+        </receiver>
+        
+        <receiver android:name=".OrientationReceiver">
+            <intent-filter>
+                <action android:name="com.nodobo.intent.rotation" />
+            </intent-filter>
+        </receiver>
+        
+        <receiver android:name=".ScreenStateReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.SCREEN_ON" />
+                <action android:name="android.intent.action.SCREEN_OFF" />
+            </intent-filter>
+        </receiver>
+        
+    </application>
+</manifest> 
