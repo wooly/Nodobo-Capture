@@ -7,7 +7,7 @@
 #include <fcntl.h>
 #include <android/log.h>
 
-#define FIFO "/aios/fifo/test.fifo"
+#define FIFO "/nodobo/capture/fifo/test.fifo"
 
 jint
 Java_com_nodobo_capture_InteractionReceiver_notifyQuirp(JNIEnv * env, jobject thiz)
