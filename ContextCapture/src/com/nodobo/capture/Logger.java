@@ -3,9 +3,7 @@ package com.nodobo.capture;
 import android.content.Context;
 import android.util.Log;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,13 +13,13 @@ public class Logger
     static int log(String TAG, String message)
     {
         try {
-    		File logFile = new File("/aios/context/context.log");
+            Log.d(TAG, message);
+
+    		File logFile = new File("/nodobo/capture/context.log");
+    		logFile.createNewFile();
             FileOutputStream logStream = new FileOutputStream(logFile, true);
             
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            
-            Log.d(TAG, message);
-        
             StringBuffer sb = new StringBuffer();
             sb.append(dateFormat.format(new Date()));
             sb.append(" - ");
@@ -33,7 +31,10 @@ public class Logger
             logStream.write(sb.toString().getBytes("UTF-8"));
             logStream.close();
         } catch (Exception e) {
-            Log.d("Logger", "Exception: " + e.getMessage());
+            final Writer result = new StringWriter();
+            final PrintWriter printWriter = new PrintWriter(result);
+            e.printStackTrace(printWriter);
+            Log.d("Logger", result.toString());
         }
         return 0;
     }
