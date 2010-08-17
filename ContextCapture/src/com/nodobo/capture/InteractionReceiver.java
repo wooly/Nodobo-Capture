@@ -17,25 +17,29 @@ public class InteractionReceiver extends BroadcastReceiver
     @Override
     public void onReceive(Context context, Intent intent)
     {
-        if (intent.getAction().equals("android.intent.interaction.virtual_key"))
+        if (intent.getAction().equals("com.nodobo.intent.softkey"))
         {
             Log.d(TAG, "Virtual Key pressed: " + intent.getStringExtra("button"));
             notifyQuirp();
             Clue clue = new Clue("virtualkey", generator, intent.getStringExtra("button"), intent.getLongExtra("time", 0));
         }
-        if (intent.getAction().equals("android.intent.interaction.hardware_key"))
+        if (intent.getAction().equals("com.nodobo.intent.hardkey"))
         {
             Log.d(TAG, "Hardware Key pressed: " + intent.getStringExtra("button") + " " + intent.getStringExtra("state"));            
             notifyQuirp();
             Clue clue = new Clue("hardwarekey", generator, intent.getStringExtra("button"), intent.getLongExtra("time", 0));
         }
-        if (intent.getAction().equals("android.intent.interaction.touch"))
+        if (intent.getAction().equals("com.nodobo.intent.touch"))
         {
-            Log.d(TAG, "Touch Screen Interaction: (" + intent.getIntExtra("xpos", 0) + "," + intent.getIntExtra("ypos", 0) + ")");
-            Clue clue = new Clue("touch", generator, intent.getIntExtra("xpos", 0) + "," + intent.getIntExtra("ypos", 0), intent.getLongExtra("time", 0));
+            Log.d(TAG, "Touch Screen Interaction: (" + intent.getIntExtra("xpos", 0) + "," + intent.getIntExtra("ypos", 0) + "," + intent.getFloatExtra("pressure", (float) 50.0) + ")");
+            Clue clue = new Clue("touch", generator, intent.getIntExtra("xpos", 0) + "," + intent.getIntExtra("ypos", 0) + "," + intent.getFloatExtra("pressure", (float) 50.0), intent.getLongExtra("time", 0));
             notifyQuirp();
         }
     }
     
     public native int notifyQuirp();
+
+    static {
+        System.loadLibrary("notifier");
+    }
 }
