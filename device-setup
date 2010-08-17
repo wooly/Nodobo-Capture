@@ -1,0 +1,37 @@
+#!/bin/sh
+
+echo "Installing busybox"
+extras/busybox-installer
+
+echo "Copying mount script"
+tools/adb remount
+tools/adb push extras/nodobo.sh /system/etc/nodobo.sh
+tools/adb shell chmod 0755 /system/etc/nodobo.sh
+tools/adb reboot
+
+echo "Waiting for phone to attach"
+while true; do
+    tools/adb shell echo >/dev/null 2>/dev/null
+    if [ $? = 0 ]; then
+        break
+    fi
+    sleep 1
+done
+
+echo "Waiting until phone fully booted"
+sleep 30
+
+echo "Creating capture directories"
+tools/adb shell mkdir /nodobo/capture /nodobo/capture/fifo /nodobo/capture/quirp /nodobo/capture/quirp/quirp-data
+
+echo "Creating fifo file"
+tools/adb shell mkfifo '/nodobo/capture/fifo/test.fifo'
+
+echo "Copying fifo-to-sig and quirp"
+tools/adb push tools/fifo-to-sig/fifo-to-sig /nodobo/capture/fifo/fifo-to-sig
+tools/adb push tools/quirp/quirp /nodobo/capture/quirp/quirp
+
+echo "Copying blank database"
+tools/adb push extras/clues.sqlite3-blank /nodobo/capture/clues.sqlite3
+
+tools/adb reboot
