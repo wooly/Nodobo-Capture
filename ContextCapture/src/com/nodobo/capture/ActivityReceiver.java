@@ -16,7 +16,7 @@ public class ActivityReceiver extends BroadcastReceiver
     @Override
     public void onReceive(Context context, Intent intent)
     {
-        if (intent.getAction().equals("android.intent.acmon.activity"))
+        if (intent.getAction().equals("com.nodobo.intent.activity"))
         {
             Clue clue = new Clue(kind, this.getClass().getName(), intent.getStringExtra("package") + "," + intent.getStringExtra("class"), intent.getLongExtra("time", -1));
             Log.d(TAG, "Caught activity: package=" + intent.getStringExtra("package") + " class=" + intent.getStringExtra("class"));
