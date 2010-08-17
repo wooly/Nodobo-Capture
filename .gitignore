@@ -1,2 +1,5 @@
 ContextCapture/bin/*
 ContextCapture/gen/*
+tools/fifo-to-sig/fifo-to-sig
+tools/purge-clues/purge-clues
+tools/quirp/quirp
