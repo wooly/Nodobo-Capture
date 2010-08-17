@@ -35,7 +35,7 @@ public class ContextCapture extends Service implements SensorEventListener
         
         String database_path = new String("/nodobo/capture/clues.sqlite3");
 		File basePathFile = new File(database_path);
-		
+
         if (basePathFile.exists() == false)
         {
             Logger.log("ContextCapture", "Database does not exist.");
@@ -63,7 +63,10 @@ public class ContextCapture extends Service implements SensorEventListener
             Logger.log("ContextCapture", "Database exists, continuing");
         }
         
-        sensorName = "CM3602 Proximity sensor";        
+        SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);
+        List<Sensor> sensors = sm.getSensorList(Sensor.TYPE_ACCELEROMETER);
+        Sensor accSensor = sensors.get(0);
+        // if (accSensor != null) sm.registerListener(this, accSensor, SensorManager.SENSOR_DELAY_UI);
     }
         
     public void onAccuracyChanged (Sensor sensor, int accuracy) {
@@ -71,16 +74,15 @@ public class ContextCapture extends Service implements SensorEventListener
     
     public void onSensorChanged(SensorEvent sensorEvent)
     {
-        int proximate = (int)sensorEvent.values[0];
-        if (proximate==1) Logger.log("ContextCapture", "Proximate: true"); else Logger.log("ContextCapture", "Proximate: false");
+        float[] values = sensorEvent.values;
+        Clue clue = new Clue("acceleration",
+                             this.getClass().getName(),
+                             "" + values[0] + "," + values[1] + "," + values[2],
+                             System.currentTimeMillis());
     }
     
     @Override
     public IBinder onBind(Intent intent) {
         return null;
-    }
-    
-    static {
-        System.loadLibrary("notifier");
     }
 }
