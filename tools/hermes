@@ -12,7 +12,8 @@ if [ ! -d $1 ]
 fi
 cd $1
 
-adb pull /nodobo/capture .
+adb pull /nodobo/capture/quirp/quirp-data .
+adb pull /nodobo/capture/clues.sqlite3 .
 
 for file in *.lz
 do
