@@ -1,0 +1,5 @@
+#!/bin/sh
+
+tools/adb uninstall com.nodobo.capture
+tools/adb install ContextCapture/bin/Nodobo-Capture-Debug.apk
+tools/adb reboot
