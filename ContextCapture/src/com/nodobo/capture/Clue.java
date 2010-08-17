@@ -12,7 +12,7 @@ public class Clue
     public final String TAG = "Clue";
     
     private static final String DATABASE_TABLE_NAME = "clues";
-    private static final String DATABASE_PATH = "/aios/context/clues.sqlite3";
+    private static final String DATABASE_PATH = "/nodobo/capture/clues.sqlite3";
     
     private ContentValues values = new ContentValues();
 	private static String date;
@@ -33,14 +33,11 @@ public class Clue
 		values.put("kind", kind);
 		values.put("generator", generator);
 		values.put("data", data);
-
-		Logger.log("ContextCapture", "Clue created.");
 		
 		store();
 	};
 	
     private long store() {
-	    Logger.log("ContextCapture", "Storing clue...");
 	    SQLiteDatabase db = SQLiteDatabase.openDatabase(DATABASE_PATH, null, SQLiteDatabase.OPEN_READWRITE);
 	    long rowId = db.insert(DATABASE_TABLE_NAME, "TEXT", values);
 	    db.close();
