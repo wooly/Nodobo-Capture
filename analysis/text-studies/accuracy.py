@@ -23,13 +23,13 @@ def main():
   cur = conn.cursor()
 
   cur.execute('select datetime, data from clues where kind="keypress"')
-  keypresses = {}
 
+  keypresses = []
   keypresstimes = []
 
   for row in cur:
     keypresstimes.append(int(row[0]))
-    keypresses[row[0]] = row[1]
+    keypresses.append(row)
 
   total = 0
 
@@ -39,27 +39,27 @@ def main():
   avgtypingspeed = total/len(keypresstimes)
   print "Average letters per second: %f" % (1000.0/avgtypingspeed)
 
-  keytimes = {}
+  keytimes = []
   times = []
   data = []
 
-  for k,v in keypresses.iteritems():
-    cur.execute('select datetime, data from clues where datetime < %d and datetime > %d and kind="%s"' % (k, k-100, "touch"))
+  for k in keypresses:
+    cur.execute('select datetime, data from clues where datetime < %d and datetime > %d and kind="%s"' % (k[0], k[0]-100, "touch"))
     for row in cur:
       data = row[1].split(',')
       times.append((row[0], (int(data[0]), int(data[1])), float(data[2])))
-    keytimes[v] = times
+    keytimes.append((k[1],times))
     times = []
   
   magnitudes = []
 
   print "Average error magnitudes for each key:"
-  for k, v in sorted(keytimes.iteritems()):
-    center = alphabet[k]
-    for item in v:
+  for k in keytimes:
+    center = alphabet[k[0]]
+    for item in k[1]:
       touch = item[1]
       magnitudes.append(pow(pow(touch[0] - center[0], 2) + pow(touch[1] - center[1], 2), 0.5))
-    print "%s: %f" % (k, float(sum(magnitudes))/len(magnitudes))
+    print "%s: %f" % (k[0], float(sum(magnitudes))/len(magnitudes))
     magnitudes = []
     
 if __name__ == "__main__":
