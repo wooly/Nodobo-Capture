@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -13,23 +12,28 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
-import java.util.Random;
+import java.util.*;
 
 public class Squares extends Activity
 {
-    public int x = 50;
-    public int y = 60;
+    public final String TAG = "Squares";
     
+    public final int[] sizes = {20, 40, 66, 86};
     public final int smallButtonSize = 20;
     public final int mediumButtonSize = 40;
-    public final int largeButtonSize = 60;
-    public final int hugeButtonSize = 80;
+    public final int largeButtonSize = 66;
+    public final int hugeButtonSize = 86;
+    
+    public final int screenWidth = 320;
+    public final int screenHeight = 533;
+    
+    public int userPosition = 0;
     
     public Boolean started = false;
     public Button button = null;
+    public List boxes = new ArrayList();
     public RelativeLayout rl = null;
     public RelativeLayout.LayoutParams startParams = new RelativeLayout.LayoutParams(120, 40);
-    public RelativeLayout.LayoutParams smallParams = new RelativeLayout.LayoutParams(30, 30);
     public Random generator = null;
     
     /** Called when the activity is first created. */
@@ -42,13 +46,21 @@ public class Squares extends Activity
         setContentView(R.layout.main);
         
         rl = (RelativeLayout) findViewById(R.id.layout);
-        
-        Display display = getWindowManager().getDefaultDisplay(); 
-        int width = display.getHeight();
-        int height = display.getWidth();
-        
+                
         long seed = System.currentTimeMillis() % 1000;
         generator = new Random(seed);
+        
+        for (int i = 0; i < 20; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                boxes.add(sizes[j]);
+            }
+        }
+        Log.d(TAG, "Boxes: " + boxes.size());
+        
+        Collections.shuffle(boxes);
+        Log.d(TAG, "Shuffled boxes: " + boxes.size());
         
         button = new Button(this);
         button.setText("Start!");
@@ -57,19 +69,29 @@ public class Squares extends Activity
         startParams.topMargin = 246;
         rl.addView(button, startParams);
         setContentView(rl);
-        
+                
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                int nextX = generator.nextInt(290);
-                int nextY = generator.nextInt(503);
+                if (userPosition < 80)
+                {
+                    Integer nextSize = (Integer) boxes.get(userPosition);
+                    Log.d(TAG, "Size of next box: " + nextSize);
+
+                    RelativeLayout.LayoutParams nextParams = new RelativeLayout.LayoutParams(nextSize, nextSize);
+                    nextParams.leftMargin = generator.nextInt(screenWidth - nextSize);
+                    nextParams.topMargin = generator.nextInt(screenHeight - nextSize);
+                    Log.d(TAG, "Next box position: (" + nextParams.leftMargin + "," + nextParams.topMargin + ")");
                 
-                smallParams.leftMargin = nextX;
-                smallParams.topMargin = nextY;
-                
-                rl.updateViewLayout(button, smallParams);
-                // setContentView(rl);
+                    rl.updateViewLayout(button, nextParams);
+                    userPosition++;
+                }
+                else
+                {
+                    Log.d(TAG, "80 Boxes Completed");
+                    finish();
+                }
             }
-        });                
+        });
     }
 
     @Override
