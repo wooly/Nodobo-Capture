@@ -12,6 +12,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Squares extends Activity
@@ -19,18 +22,18 @@ public class Squares extends Activity
     public final String TAG = "Squares";
     
     public final int[] sizes = {20, 40, 66, 86};
-    public final int smallButtonSize = 20;
-    public final int mediumButtonSize = 40;
-    public final int largeButtonSize = 66;
-    public final int hugeButtonSize = 86;
     
     public final int screenWidth = 320;
     public final int screenHeight = 533;
+    
+    public final String captureDir = "/nodobo/capture/analysis";
     
     public int userPosition = 0;
     
     public Boolean started = false;
     public Button button = null;
+    public File outFile = null;
+    public FileOutputStream outStream = null;
     public List boxes = new ArrayList();
     public RelativeLayout rl = null;
     public RelativeLayout.LayoutParams startParams = new RelativeLayout.LayoutParams(120, 40);
@@ -69,7 +72,22 @@ public class Squares extends Activity
         startParams.topMargin = 246;
         rl.addView(button, startParams);
         setContentView(rl);
-                
+        
+        boolean success = (new File(captureDir)).mkdir();
+        if (success) {
+          Log.d(TAG, "Directory: " + captureDir + " created");
+        }
+        
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        
+        try {
+            outFile = new File(captureDir + "/" + dateFormat.format(new Date()) + ".csv");
+    		outFile.createNewFile();
+            outStream = new FileOutputStream(outFile, true);
+        } catch (Exception e) {
+            Log.e(TAG, "Exception: " + e);
+        }
+        
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (userPosition < 80)
@@ -84,10 +102,24 @@ public class Squares extends Activity
                 
                     rl.updateViewLayout(button, nextParams);
                     userPosition++;
+                    
+                    try {
+                        String data = "" + System.currentTimeMillis() + "," + nextSize + "," + (int)((nextParams.leftMargin + nextSize/2)*1.5) + "," + (int)((nextParams.topMargin + nextSize/2)*1.5) + "\n";
+                        outStream.write(data.getBytes("UTF-8"));
+                    } catch (Exception e) {
+                        Log.e(TAG, "Exception: " + e);
+                    }
                 }
                 else
                 {
                     Log.d(TAG, "80 Boxes Completed");
+                    try {
+                        String finish = "Finished: " + System.currentTimeMillis();
+                        outStream.write(finish.getBytes("UTF-8"));
+                        outStream.close();
+                    } catch (Exception e) {
+                        Log.e(TAG, "Exception: e");
+                    }
                     finish();
                 }
             }
@@ -98,6 +130,12 @@ public class Squares extends Activity
     public void onPause()
     {
         super.onPause();
+        try {
+            outStream.write(new String("interrupted").getBytes("UTF-8"));
+            outStream.close();
+        } catch (Exception e) {
+            Log.d(TAG, "Exception: e");
+        }
         finish();
     }
 }
