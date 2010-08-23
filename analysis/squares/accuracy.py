@@ -5,13 +5,15 @@ import sys
 import csv
 import math
 
+from statlib import stats
+
 def main():
   # if (len(sys.argv) < 3):
   #   print "Usage!"
   #   exit(1)
   
   database = '/Users/stephen/clues.sqlite3'
-  points = '/Users/stephen/20100823111432.csv'
+  points = '/Users/stephen/20100823220757.csv'
   
   boxData = csv.reader(open(points, 'rb'))
 
@@ -19,7 +21,7 @@ def main():
 
   for row in boxData:
     if (len(row) == 4):
-      boxes.append({"time":long(row[0]), "size":int(row[1]), "position":((int(row[2])*3)/2,(int(row[3])*3)/2)})
+      boxes.append({"time":long(row[0]), "size":int(row[1]), "position":(int(row[2]),int(row[3]))})
     else:
       finishTime = long(row[0].split(':')[1])
   
@@ -33,9 +35,21 @@ def main():
     data = touch[1].split(',')
     touches.append({"time":long(touch[0]), "position":(int(data[0]),int(data[1])), "pressure":float(data[2])})
 
-  total = sum((box['time'] - boxes[i]['time']) for i,box in enumerate(boxes[1:]))
-  average = total/80
-  print "Average boxes per second: %f" % (1000.0/average)
+  timesForSize = {30:[], 60:[], 99:[], 129:[]}
+
+  deltas = []
+  for i,box in enumerate(boxes[:-1]):
+    delta = (boxes[i+1]['time'] - box['time'])/1000.0
+    timesForSize[box['size']].append(delta)
+    deltas.append(delta)
+  deltas.append((finishTime - boxes[-1]['time'])/1000.0)
+  minimum = min(deltas)
+  maximum = max(deltas)
+  mean = stats.mean(deltas)
+  stddev = stats.stdev(deltas)
+  for k,v in sorted(timesForSize.iteritems()):
+    print "%d: %.3f/%.3f/%.3f/%.3f (%.3f bps)" % (k, min(v), stats.mean(v), max(v), stats.stdev(v), 1/stats.mean(v))
+  print "Avg: %.3f/%.3f/%.3f/%.3f (%.3f boxes per second)" % (minimum, mean, maximum, stddev, 1/mean)
 
   boxesWithTouches = []
   
@@ -44,20 +58,26 @@ def main():
     nextTime = boxes[i+1]['time']
     def f(x): return x['time'] > time and x['time'] < nextTime
     associatedTouches = filter(f, touches)
-    boxesWithTouches.append({'position': box['position'], 'touches':associatedTouches})
+    boxesWithTouches.append({'size': box['size'], 'position': box['position'], 'touches':associatedTouches})
 
   mags = []
-
-  print "Average error magnitudes for each button:"
-  for boxWithTouch in boxesWithTouches:
-    center = boxWithTouch['position']
-    for touch in boxWithTouch['touches']:
-      tapPos = touch['position']
-      deltaX = center[0] - tapPos[0]
-      deltaY = center[1]  - tapPos[1]
-      mags.append(math.sqrt(pow(deltaX, 2) + pow(deltaY, 2)))
-    print "Box: %s has error %f" % (center, sum(mags)/len(mags))
-    mags = []
+  magsPerSize = []
+  sizes = [30, 60, 99, 129]
+  
+  for buttonSize in sizes:
+    def sizeOfBox(t): return t['size'] == buttonSize
+    boxes = filter(sizeOfBox, boxesWithTouches)
+    for boxWithTouch in boxes:
+      center = boxWithTouch['position']
+      for touch in boxWithTouch['touches']:
+        tapPos = touch['position']
+        deltaX = center[0] - tapPos[0]
+        deltaY = center[1]  - tapPos[1]
+        mags.append(math.sqrt(pow(deltaX, 2) + pow(deltaY, 2)))
+      magsPerSize = magsPerSize + mags
+      mags = []
+    print "%d: %.3f/%.3f/%.3f/%.3f" % (buttonSize, min(magsPerSize), stats.mean(magsPerSize), max(magsPerSize), stats.stdev(magsPerSize))
+    magsPerSize = []
   
 
 if __name__ == "__main__":
