@@ -104,7 +104,7 @@ public class Squares extends Activity
                     userPosition++;
                     
                     try {
-                        String data = "" + System.currentTimeMillis() + "," + nextSize + "," + (int)((nextParams.leftMargin + nextSize/2)*1.5) + "," + (int)((nextParams.topMargin + nextSize/2)*1.5) + "\n";
+                        String data = "" + System.currentTimeMillis() + "," + nextSize*1.5 + "," + (int)((nextParams.leftMargin + nextSize/2)*1.5) + "," + (int)((nextParams.topMargin + nextSize/2)*1.5) + "\n";
                         outStream.write(data.getBytes("UTF-8"));
                     } catch (Exception e) {
                         Log.e(TAG, "Exception: " + e);
