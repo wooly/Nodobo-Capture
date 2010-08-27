@@ -64,9 +64,14 @@ public class ContextCapture extends Service implements SensorEventListener
         }
         
         SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);
-        List<Sensor> sensors = sm.getSensorList(Sensor.TYPE_ACCELEROMETER);
-        Sensor accSensor = sensors.get(0);
+
+        List<Sensor> accSensors = sm.getSensorList(Sensor.TYPE_ACCELEROMETER);
+        Sensor accSensor = accSensors.get(0);
         // if (accSensor != null) sm.registerListener(this, accSensor, SensorManager.SENSOR_DELAY_UI);
+
+        List<Sensor> proxSensors = sm.getSensorList(Sensor.TYPE_PROXIMITY);
+        Sensor proxSensor = proxSensors.get(0);
+        if (proxSensor != null) sm.registerListener(this, proxSensor, SensorManager.SENSOR_DELAY_FASTEST);
     }
         
     public void onAccuracyChanged (Sensor sensor, int accuracy) {
