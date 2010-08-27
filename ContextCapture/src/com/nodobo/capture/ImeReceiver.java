@@ -29,9 +29,18 @@ public class ImeReceiver extends BroadcastReceiver
         }
         if (intent.getAction().equals("com.nodobo.intent.ime.keypress"))
         {
-            char key = intent.getCharExtra("key", (char) 0x00);
-            if (key == (char) 0x20) data = "<space>";
-            else data = "" + key;
+            int key = intent.getIntExtra("key", 0);
+            switch (key)
+            {
+                case -6: data = "<alt>"; break;
+                case -5: data = "<del>"; break;
+                case -4: data = "<done>"; break;
+                case -3: data = "<cancel>"; break;
+                case -2: data = "<mode>"; break;
+                case -1: data = "<shift>"; break;
+                case 32: data = "<space>"; break;
+                default: data = "" + (char) key; break;
+            }
             Clue clue = new Clue("keypress", generator, data, intent.getLongExtra("time", 0));
             Log.d(TAG, "Caught signal: IME press - " + data);
         }
