@@ -21,7 +21,7 @@ def main():
 
   for row in boxData:
     if (len(row) == 4):
-      boxes.append({"time":long(row[0]), "size":int(row[1]), "position":(int(row[2]),int(row[3]))})
+      boxes.append({"time":long(row[0]), "size":float(row[1]), "position":(int(row[2]),int(row[3]))})
     else:
       finishTime = long(row[0].split(':')[1])
   
