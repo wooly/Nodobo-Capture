@@ -79,11 +79,18 @@ public class ContextCapture extends Service implements SensorEventListener
     
     public void onSensorChanged(SensorEvent sensorEvent)
     {
+        long timestamp = sensorEvent.timestamp;
         float[] values = sensorEvent.values;
-        Clue clue = new Clue("acceleration",
-                             this.getClass().getName(),
-                             "" + values[0] + "," + values[1] + "," + values[2],
-                             System.currentTimeMillis());
+        String generator = this.getClass().getName();
+
+        if (sensorEvent.sensor.getType() == Sensor.TYPE_PROXIMITY)
+        {
+            Clue clue = new clue("proximity", generator, "" + values[0], timestamp);
+        }
+        else
+        {
+            Clue clue = new Clue("acceleration", generator, "" + values[0] + "," + values[1] + "," + values[2], timestamp);
+        }
     }
     
     @Override
