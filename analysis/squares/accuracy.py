@@ -8,12 +8,12 @@ import math
 from statlib import stats
 
 def main():
-  # if (len(sys.argv) < 3):
-  #   print "Usage!"
-  #   exit(1)
+  if (len(sys.argv) < 2):
+    print "Usage!"
+    exit(1)
   
   database = '/Users/stephen/clues.sqlite3'
-  points = '/Users/stephen/20100823220757.csv'
+  points = sys.argv[1]
   
   boxData = csv.reader(open(points, 'rb'))
 
