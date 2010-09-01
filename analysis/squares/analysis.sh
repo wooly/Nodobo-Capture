@@ -1,12 +1,7 @@
 #!/bin/sh
 
-rm -f sitting.dat walking.dat results-aggregated.txt
+rm -f sitting.dat walking.dat
 
-for file in results/*.csv
-do
-    echo $file >> results-aggregated.txt
-    python accuracy.py $file >> results-aggregated.txt
-done
 
 echo Sitting:
 
