@@ -76,7 +76,6 @@ def main():
         mags.append(math.sqrt(pow(deltaX, 2) + pow(deltaY, 2)))
       magsPerSize = magsPerSize + mags
       mags = []
-    # print "%d: %.3f/%.3f/%.3f/%.3f" % (buttonSize, min(magsPerSize), stats.mean(magsPerSize), max(magsPerSize), stats.stdev(magsPerSize))
     magsPerSize = []
   
 
