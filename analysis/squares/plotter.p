@@ -4,6 +4,7 @@ set datafile separator ","
 set xlabel "Button size (mm)"
 set ylabel "Number of taps required"
 set style data histogram
+set yrange [0:]
 set style histogram errorbars gap 1
 set style fill solid border -1
 set boxwidth 0.9
