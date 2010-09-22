@@ -8,11 +8,11 @@ import math
 from statlib import stats
 
 def main():
-  if (len(sys.argv) < 2):
+  if (len(sys.argv) < 3):
     print "Usage!"
     exit(1)
   
-  database = '/Users/stephen/clues.sqlite3'
+  database = sys.argv[2]
   points = sys.argv[1]
   
   boxData = list(csv.reader(open(points, 'rb')))
@@ -56,12 +56,13 @@ def main():
   boxesWithTouches.append({'size': box['size'], 'position': box['position'], 'touches':associatedTouches, 'attempts':numTaps})  
   
   sizes = [30, 60, 99, 129]
+  mmsizes = [3,6,10,13]
 
   for buttonSize in sizes:
     def sizeOfBox(t): return t['size'] == buttonSize
     filteredBoxes = filter(sizeOfBox, boxesWithTouches)
     listOfAttempts = [box['attempts'] for box in filteredBoxes]
-    print "%d: %.3f/%.3f/%.3f/%.3f" % (buttonSize, stats.mean(listOfAttempts), min(listOfAttempts), max(listOfAttempts), stats.stdev(listOfAttempts))
+    print "%d: %.3f/%.3f/%.3f/%.3f" % (mmsizes[sizes.index(buttonSize)], stats.mean(listOfAttempts), min(listOfAttempts), max(listOfAttempts), stats.stdev(listOfAttempts))
 
 if __name__ == "__main__":
   sys.exit(main())
