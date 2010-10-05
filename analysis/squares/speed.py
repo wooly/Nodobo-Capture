@@ -36,6 +36,7 @@ def main():
     touches.append({"time":long(touch[0]), "position":(int(data[0]),int(data[1])), "pressure":float(data[2])})
 
   timesForSize = {30:[], 60:[], 99:[], 129:[]}
+  mmsizes = {30:3, 60:6, 99:10, 129:13}
 
   deltas = []
   for i,box in enumerate(boxes[:-1]):
@@ -44,7 +45,7 @@ def main():
     deltas.append(delta)
   deltas.append((finishTime - boxes[-1]['time'])/1000.0)
   for k,v in sorted(timesForSize.iteritems()):
-    print "%d: %.3f/%.3f/%.3f/%.3f (%.3f bps)" % (k, min(v), stats.mean(v), max(v), stats.stdev(v), 1/stats.mean(v))
+    print "%d: %.3f/%.3f/%.3f/%.3f (%.3f bps)" % (mmsizes[k], stats.mean(v), min(v), max(v), stats.stdev(v), 1/stats.mean(v))
   
 if __name__ == "__main__":
   sys.exit(main())
