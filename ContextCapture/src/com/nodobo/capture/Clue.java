@@ -6,6 +6,7 @@ import java.util.Date;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
 public class Clue
 {
@@ -38,12 +39,14 @@ public class Clue
 	};
 	
     private long store() {
-	    SQLiteDatabase db = SQLiteDatabase.openDatabase(DATABASE_PATH, null, SQLiteDatabase.OPEN_READWRITE);
-	    long rowId = db.insert(DATABASE_TABLE_NAME, "TEXT", values);
-	    db.close();
+        DatabaseOpenHelper doh = new DatabaseOpenHelper();
+        SQLiteDatabase mCluesDatabase = doh.getWritableDatabase();
+        // SQLiteDatabase db = SQLiteDatabase.openDatabase(DATABASE_PATH, null, SQLiteDatabase.OPEN_READWRITE);
+	    long rowId = mCluesDatabase.insert(DATABASE_TABLE_NAME, "TEXT", values);
+	    doh.close();
         if (rowId > 0)
         {
-    	    Logger.log("ContextCapture", "Clue stored.");
+    	    Log.d("ContextCapture", "Clue stored.");
             return rowId;
         }
         
