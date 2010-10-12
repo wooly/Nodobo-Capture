@@ -9,7 +9,7 @@ import java.lang.StringBuilder;
 public class ScreenStateReceiver extends BroadcastReceiver
 {
     private final String TAG = "ScreenStateReceiver";
-    private final String kind = "screenState";
+    private final String kind = "screen";
     private String generator;
     private String data;
     
@@ -18,12 +18,12 @@ public class ScreenStateReceiver extends BroadcastReceiver
     {
         if (intent.getAction().equals(Intent.ACTION_SCREEN_ON))
         {
-            generator = this.getClass().getName();            
+            generator = this.getClass().getName();
             Clue clue = new Clue(kind, generator, "on");
         }
         else if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF))
         {
-            generator = this.getClass().getName();            
+            generator = this.getClass().getName();
             Clue clue = new Clue(kind, generator, "off");
         }
     }

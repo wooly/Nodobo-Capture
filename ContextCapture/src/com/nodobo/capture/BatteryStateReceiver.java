@@ -10,7 +10,7 @@ import java.lang.StringBuilder;
 public class BatteryStateReceiver extends BroadcastReceiver
 {
     private final String TAG = "BatteryStateReceiver";
-    private final String kind = "batteryLevel";
+    private final String kind = "battery";
     private String generator;
     private String data;
     

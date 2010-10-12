@@ -10,7 +10,7 @@ import java.lang.StringBuilder;
 public class ImeReceiver extends BroadcastReceiver
 {
     private final String TAG = "ImeReceiver";
-    private final String kind = "imeState";
+    private final String kind = "keyboard";
     private final String generator = "ImeReceiver";
     private String data;
     

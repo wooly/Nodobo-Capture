@@ -11,12 +11,13 @@ import java.lang.StringBuilder;
 public class InteractionReceiver extends BroadcastReceiver
 {
     private final String TAG = "InteractionReceiver";
-    private final String kind = "userInteraction";
-    private final String generator = "InteractionReceiver";
+    private final String kind = "interaction";
+    private final String generator;
     
     @Override
     public void onReceive(Context context, Intent intent)
     {
+        generator = this.getClass().getName();
         if (intent.getAction().equals("com.nodobo.intent.softkey"))
         {
             Log.d(TAG, "Virtual Key pressed: " + intent.getStringExtra("button"));
