@@ -22,12 +22,6 @@
             </intent-filter>
         </receiver>
         
-        <receiver android:name=".BatteryStateReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BATTERY_CHANGED" />
-            </intent-filter>
-        </receiver>
-        
         <receiver android:name=".BootCompletedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -62,13 +56,5 @@
                 <action android:name="com.nodobo.intent.rotation" />
             </intent-filter>
         </receiver>
-        
-        <receiver android:name=".ScreenStateReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.SCREEN_ON" />
-                <action android:name="android.intent.action.SCREEN_OFF" />
-            </intent-filter>
-        </receiver>
-        
     </application>
 </manifest> 

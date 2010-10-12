@@ -63,6 +63,9 @@ public class ContextCapture extends Service implements SensorEventListener
             Logger.log("ContextCapture", "Database exists, continuing");
         }
         
+        registerBatteryStateReceiver();
+        registerScreenStateReceiver();
+        
         SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);
 
         List<Sensor> accSensors = sm.getSensorList(Sensor.TYPE_ACCELEROMETER);
@@ -96,5 +99,20 @@ public class ContextCapture extends Service implements SensorEventListener
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+    
+    private void registerBatteryStateReceiver()
+    {
+        IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        BroadcastReceiver mReceiver = new BatteryStateReceiver();
+        registerReceiver(mReceiver, filter);
+    }
+    
+    private void registerScreenStateReceiver()
+    {
+        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        BroadcastReceiver mReceiver = new ScreenStateReceiver();
+        registerReceiver(mReceiver, filter);
     }
 }
