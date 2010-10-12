@@ -60,18 +60,19 @@ public class ContextCapture extends Service implements SensorEventListener
         if (proxSensor != null) sm.registerListener(this, proxSensor, SensorManager.SENSOR_DELAY_FASTEST);
     }
         
-    public void onAccuracyChanged (Sensor sensor, int accuracy) {
+    public void onAccuracyChanged (Sensor sensor, int accuracy)
+    {
     }
     
     public void onSensorChanged(SensorEvent sensorEvent)
     {
-        long timestamp = sensorEvent.timestamp;
+        long timestamp = System.currentTimeMillis();
         float[] values = sensorEvent.values;
         String generator = this.getClass().getName();
 
         if (sensorEvent.sensor.getType() == Sensor.TYPE_PROXIMITY)
         {
-            Clue clue = new clue("proximity", generator, "" + values[0], timestamp);
+            Clue clue = new Clue("proximity", generator, "" + values[0], timestamp);
         }
         else
         {
@@ -80,7 +81,8 @@ public class ContextCapture extends Service implements SensorEventListener
     }
     
     @Override
-    public IBinder onBind(Intent intent) {
+    public IBinder onBind(Intent intent)
+    {
         return null;
     }
     
