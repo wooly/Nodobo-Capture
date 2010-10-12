@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
 import android.app.Service;
+import android.os.Environment;
 import android.os.IBinder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -27,40 +28,22 @@ public class ContextCapture extends Service implements SensorEventListener
     private boolean captureState = false;
     private SensorManager sensorManager;
     
-    /** Called when the activity is first created. */
     @Override
     public void onCreate()
     {
         super.onCreate();
-        
-        String database_path = new String("/nodobo/capture/clues.sqlite3");
-		File basePathFile = new File(database_path);
 
-        if (basePathFile.exists() == false)
-        {
-            Logger.log("ContextCapture", "Database does not exist.");
-            try
-            {
-                SQLiteDatabase database = SQLiteDatabase.openOrCreateDatabase(database_path, null); 
-                String CLUES_TABLE_CREATE = "CREATE TABLE clues ("
-                        + "_id" + " INTEGER PRIMARY KEY,"
-                        + "kind" + " VARCHAR[16],"
-                        + "generator" + " VARCHAR[32],"
-                        + "datetime" + " DATETIME,"
-                        + "data" + " TEXT"
-                        + ");"; 
-                database.execSQL(CLUES_TABLE_CREATE);
-                database.close();
-            }
-            catch (SQLiteException ex)
-            {
-                Logger.log("ContextCapture", "ERROR: " + ex.getMessage());
-            }
-            Logger.log("ContextCapture", "Database created!");
-        }
-        else
-        {
-            Logger.log("ContextCapture", "Database exists, continuing");
+        boolean mExternalStorageAvailable = false;
+        boolean mExternalStorageWriteable = false;
+    
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            mExternalStorageAvailable = mExternalStorageWriteable = true;
+        } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            mExternalStorageAvailable = true;
+            mExternalStorageWriteable = false;
+        } else {
+            mExternalStorageAvailable = mExternalStorageWriteable = false;
         }
         
         registerBatteryStateReceiver();
