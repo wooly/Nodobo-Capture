@@ -7,7 +7,7 @@
 #include <fcntl.h>
 #include <android/log.h>
 
-#define FIFO "/nodobo/capture/fifo/test.fifo"
+#define FIFO "/data/nodobo/fifo-sigusr/fifo-sigusr.fifo"
 
 jint
 Java_com_nodobo_capture_InteractionReceiver_notifyQuirp(JNIEnv * env, jobject thiz)
@@ -17,7 +17,7 @@ Java_com_nodobo_capture_InteractionReceiver_notifyQuirp(JNIEnv * env, jobject th
     fd = open(FIFO, O_WRONLY);
     if(fd < 0)
     {
-        __android_log_print(ANDROID_LOG_INFO, "QUIRPA", "Unable to open %s for writing", FIFO);
+        __android_log_print(ANDROID_LOG_INFO, "Nodobo", "Unable to open %s for writing", FIFO);
         return(1);
     }
     ret = write(fd, "A", 1);
