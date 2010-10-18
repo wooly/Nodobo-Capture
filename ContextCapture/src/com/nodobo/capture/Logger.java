@@ -1,6 +1,7 @@
 package com.nodobo.capture;
 
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 
 import java.io.*;
@@ -15,7 +16,9 @@ public class Logger
         try {
             Log.d(TAG, message);
 
-    		File logFile = new File("/nodobo/capture/context.log");
+            File logFileDir = new File(Environment.getExternalStorageDirectory(), "nodobo");
+            logFileDir.mkdirs();
+            File logFile = new File(logFileDir, "capture.log");
     		logFile.createNewFile();
             FileOutputStream logStream = new FileOutputStream(logFile, true);
             
