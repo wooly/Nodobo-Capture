@@ -16,9 +16,9 @@
 #include "fastlz.h"
 #include "rbuf.h"
 
-#define DATADIR "/nodobo/capture/quirp/quirp-data/"
-#define PIDFILE "/nodobo/capture/quirp/quirp.pid"
-#define LOGFILE	"/nodobo/capture/quirp/quirp.log"
+#define DATADIR "/sdcard/nodobo/quirp-data/"
+#define PIDFILE "/data/nodobo/quirp/quirp.pid"
+#define LOGFILE	"/data/nodobo/quirp/quirp.log"
 #define FB "/dev/graphics/fb0"
 #define ROW_BYTES 480 * 4
 #define FRAME_BYTES 800 * ROW_BYTES
