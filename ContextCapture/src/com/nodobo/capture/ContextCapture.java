@@ -13,6 +13,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.util.Log;
 
 import android.hardware.Sensor;
@@ -27,6 +29,8 @@ public class ContextCapture extends Service implements SensorEventListener
     private String sensorName;
     private boolean captureState = false;
     private SensorManager sensorManager;
+    
+    private LocationManager mLocationManager;
     
     @Override
     public void onCreate()
@@ -46,6 +50,10 @@ public class ContextCapture extends Service implements SensorEventListener
             mExternalStorageAvailable = mExternalStorageWriteable = false;
         }
         
+        File nodoboDirectory = new File(Environment.getExternalStorageDirectory() + "nodobo/");
+        nodoboDirectory.mkdirs();
+        
+        locationSetup();
         registerBatteryStateReceiver();
         registerScreenStateReceiver();
         
@@ -84,6 +92,13 @@ public class ContextCapture extends Service implements SensorEventListener
     public IBinder onBind(Intent intent)
     {
         return null;
+    }
+    
+    private void locationSetup()
+    {
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LocationListener mLocationListener = new NodoboLocationListener();
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 300000, 0, mLocationListener);
     }
     
     private void registerBatteryStateReceiver()
