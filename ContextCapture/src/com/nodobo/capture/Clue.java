@@ -41,7 +41,6 @@ public class Clue
     private long store() {
         DatabaseOpenHelper doh = new DatabaseOpenHelper();
         SQLiteDatabase mCluesDatabase = doh.getWritableDatabase();
-        // SQLiteDatabase db = SQLiteDatabase.openDatabase(DATABASE_PATH, null, SQLiteDatabase.OPEN_READWRITE);
 	    long rowId = mCluesDatabase.insert(DATABASE_TABLE_NAME, "TEXT", values);
 	    doh.close();
         if (rowId > 0)
