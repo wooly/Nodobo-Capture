@@ -12,7 +12,7 @@ public class InteractionReceiver extends BroadcastReceiver
 {
     private final String TAG = "InteractionReceiver";
     private final String kind = "interaction";
-    private final String generator;
+    private String generator;
     
     @Override
     public void onReceive(Context context, Intent intent)
