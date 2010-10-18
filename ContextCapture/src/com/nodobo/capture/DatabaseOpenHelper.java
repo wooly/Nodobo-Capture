@@ -29,7 +29,8 @@ public class DatabaseOpenHelper
 
     private void open() {
         File dbDir=null, dbFile=null;
-        dbDir = Environment.getExternalStorageDirectory();
+        dbDir = new File(Environment.getExternalStorageDirectory(),"nodobo");
+        dbDir.mkdirs();
         dbFile = new File(dbDir, "clues.sqlite3");
         
         if (dbFile.exists()) {
