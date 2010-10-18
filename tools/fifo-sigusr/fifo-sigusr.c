@@ -6,10 +6,10 @@
 #include <fcntl.h> 
 #include <signal.h>
 
-#define FIFO "/nodobo/capture/fifo/test.fifo"
-#define LOGFILE	"/nodobo/capture/fifo/fifotosig.log"
-#define FIFOPID "/nodobo/capture/fifo/fifotosig.pid"
-#define QUIRPID "/nodobo/capture/quirp/quirp.pid"
+#define FIFO "/data/nodobo/fifo-sigusr/fifo-sigusr.fifo"
+#define LOGFILE	"/data/nodobo/fifo-sigusr/fifo-sigusr.log"
+#define FIFOPID "/data/nodobo/fifo-sigusr/fifo-sigusr.pid"
+#define QUIRPID "/data/nodobo/quirp/quirp.pid"
 #define SLEEP_TIMEOUT 10000
 
 void log_message(const char *message)
