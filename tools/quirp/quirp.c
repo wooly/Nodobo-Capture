@@ -173,13 +173,16 @@ int main(void)
     struct timeval t;
     double start, end;
     int startreturn, endreturn;
+    char err[20];
     
     daemonize();
 
-    if (chdir(DATADIR) < 0)
+    int errcode;
+    while (chdir(DATADIR) < 0)
     {
-        log_message("Failed to change to data dir");
-        exit(1);
+        snprintf(err, sizeof(err), "Error: %d", errno);
+        log_message(err);
+        sleep(1);
     }
     
     rb = rbuf_new(MAXFPS * SECONDS);
