@@ -7,7 +7,7 @@
 #include <signal.h>
 
 #define FIFO "/data/nodobo/fifo-sigusr/fifo-sigusr.fifo"
-#define LOGFILE	"/data/nodobo/fifo-sigusr/fifo-sigusr.log"
+#define LOGFILE "/data/nodobo/fifo-sigusr/fifo-sigusr.log"
 #define FIFOPID "/data/nodobo/fifo-sigusr/fifo-sigusr.pid"
 #define QUIRPID "/data/nodobo/quirp/quirp.pid"
 #define SLEEP_TIMEOUT 10000
@@ -63,14 +63,14 @@ void daemonize()
 
     fd = open(FIFOPID, O_RDWR|O_CREAT, 0644);
     if (fd < 0)
-	exit(1); /* can not open */
+        exit(1); /* can not open */
     // if (lockf(fd, F_TLOCK, 0) < 0)
     // exit(0); /* can not lock */
 
     sprintf(str, "%d\n", getpid());
     write(fd, str, strlen(str)); /* record pid to lockfile */
     close(fd);
-	    
+            
     signal(SIGCHLD, SIG_IGN);
     signal(SIGTSTP, SIG_IGN);
     signal(SIGTTOU, SIG_IGN);
@@ -91,15 +91,15 @@ int main(int argc, char * argv[])
     pfd[0].fd = fd;
     pfd[0].events = 0;
     pfd[0].revents = 0;
-    
+
     while(1)
     {
         ret = poll(pfd, 1, -1);
         if (ret < 0)
         {
-        	log_message("Error reading from named pipe\n");
+            log_message("Error reading from named pipe\n");
             exit(1);
-    	}
+        }
         else if (ret > 0)
         {
             if (pfd[0].revents & POLLHUP)
