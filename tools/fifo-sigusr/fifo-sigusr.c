@@ -5,6 +5,7 @@
 #include <sys/poll.h> 
 #include <fcntl.h> 
 #include <signal.h>
+#include <time.h>
 
 #define FIFO "/data/nodobo/fifo-sigusr/fifo-sigusr.fifo"
 #define LOGFILE "/data/nodobo/fifo-sigusr/fifo-sigusr.log"
@@ -86,12 +87,15 @@ int main(int argc, char * argv[])
     int ret;
     int fd;
     struct pollfd pfd[1];
+    time_t lastsig;
     daemonize();
     fd = open(FIFO, O_RDONLY | O_NONBLOCK);
     pfd[0].fd = fd;
     pfd[0].events = 0;
     pfd[0].revents = 0;
-
+    
+    lastsig = time(NULL);
+    
     while(1)
     {
         ret = poll(pfd, 1, -1);
@@ -102,12 +106,20 @@ int main(int argc, char * argv[])
         }
         else if (ret > 0)
         {
+            time_t now;
+            
             if (pfd[0].revents & POLLHUP)
             {
                 close(fd);
                 open(FIFO, O_RDONLY | O_NONBLOCK);
             }
-            notifyQuirp();
+            
+            now = time(NULL);
+            if (now - lastsig > 1)  /* Signal no more than every 2 seconds */
+            {
+                lastsig = now;
+                notifyQuirp();
+            }
         }
     }
     close(fd);
