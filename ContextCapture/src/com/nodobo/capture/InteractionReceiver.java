@@ -14,6 +14,12 @@ public class InteractionReceiver extends BroadcastReceiver
     private final String kind = "interaction";
     private String generator;
     
+    public InteractionReceiver()
+    {
+        super();
+        System.loadLibrary("notifier");
+    }
+    
     @Override
     public void onReceive(Context context, Intent intent)
     {
@@ -39,8 +45,4 @@ public class InteractionReceiver extends BroadcastReceiver
     }
     
     public native int notifyQuirp();
-
-    static {
-        System.loadLibrary("notifier");
-    }
 }
