@@ -45,7 +45,6 @@ public class DatabaseOpenHelper
     }
 
     public void close() {
-        Log.d(TAG, "Closing database");
         db.close();
     }
 
@@ -57,7 +56,6 @@ public class DatabaseOpenHelper
     public SQLiteDatabase getWritableDatabase() {
         if (db == null)
         {
-            Log.d(TAG, "Database is null, opening");
             this.open();
         }
         return db;
