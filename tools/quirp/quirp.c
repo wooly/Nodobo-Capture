@@ -65,7 +65,7 @@ void sig_usr(int signum)
 {
     void **buf;
     
-    log_message("Caught SIGUSR, flagging ring buffer for write");
+    // log_message("Caught SIGUSR, flagging ring buffer for write");
     for (buf = rb->buf; buf <= rb->end; buf++)
     {
         if (*buf != NULL)
