@@ -54,5 +54,3 @@ awk '/13:/' | \
 cut -d' ' -f2 | \
 awk -F'/' '{a+=$1; b+=$2; c+=$3; d+=$4; ++n} END {printf "13,%.3f,%.3f,%.3f,%.3f\n", (a/n), (b/n), c/n, d/n}' | \
 tee -a walking.dat
-
-gnuplot 'plotter.p'
