@@ -17,45 +17,10 @@
             </intent-filter>
         </service>    	
     
-        <receiver android:name=".ActivityReceiver">
-            <intent-filter>
-                <action android:name="com.nodobo.intent.activity" />
-            </intent-filter>
-        </receiver>
-        
         <receiver android:name=".MediaMountedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_MOUNTED" />
                 <data android:scheme="file" /> 
-            </intent-filter>
-        </receiver>
-        
-        <receiver android:name=".ChargingStateReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
-                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
-            </intent-filter>
-        </receiver>
-        
-        <receiver android:name=".ImeReceiver">
-            <intent-filter>
-                <action android:name="com.nodobo.intent.ime.visible" />
-                <action android:name="com.nodobo.intent.ime.invisible" />
-                <action android:name="com.nodobo.intent.ime.keypress" />
-            </intent-filter>
-        </receiver>
-        
-        <receiver android:name=".InteractionReceiver">
-            <intent-filter>
-                <action android:name="com.nodobo.intent.hardkey" />
-                <action android:name="com.nodobo.intent.softkey" />
-                <action android:name="com.nodobo.intent.touch" />
-            </intent-filter>
-        </receiver>
-        
-        <receiver android:name=".OrientationReceiver">
-            <intent-filter>
-                <action android:name="com.nodobo.intent.rotation" />
             </intent-filter>
         </receiver>
     </application>
