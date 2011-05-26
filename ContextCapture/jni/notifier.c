@@ -9,18 +9,16 @@
 
 #define FIFO "/data/nodobo/fifo-sigusr/fifo-sigusr.fifo"
 
-jint
+void
 Java_com_nodobo_capture_InteractionReceiver_notifyQuirp(JNIEnv * env, jobject thiz)
 {
     int ret, value;
     int fd;
-    fd = open(FIFO, O_WRONLY);
+    fd = open(FIFO, O_WRONLY | O_NONBLOCK);
     if(fd < 0)
     {
         __android_log_print(ANDROID_LOG_INFO, "Nodobo", "JNI: Unable to open %s for writing", FIFO);
-        return(1);
     }
     ret = write(fd, "A", 1);
     close(fd);
-    return(0);
 }
