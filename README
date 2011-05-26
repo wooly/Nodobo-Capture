@@ -1,0 +1,9 @@
+Needed directories:
+
+/data/nodobo/
+/data/nodobo/fifo-sigusr
+/data/nodobo/quirp
+
+/sdcard/nodobo/
+
+mkfifo /data/nodobo/fifo-sigusr/fifo-sigusr.fifo
