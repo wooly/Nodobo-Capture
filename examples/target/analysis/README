@@ -1,0 +1,9 @@
+This work is, er, not very well documented. Sorry!
+
+To get the two interesting graphs, just run these two zsh scripts:
+
+zsh speed.zsh
+zsh taps.zsh
+
+If you're not using Mac OS X and gnuplot/Aquaterm, you're going to have to
+modify some stuff.
