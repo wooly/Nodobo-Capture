@@ -34,11 +34,9 @@ public class DatabaseOpenHelper
         dbFile = new File(dbDir, "clues.sqlite3");
         
         if (dbFile.exists()) {
-            Log.d(TAG, "Opening database at " + dbFile);
             db = SQLiteDatabase.openOrCreateDatabase(dbFile, null);
         }
         else {
-            Log.d(TAG, "Creating database at " + dbFile);
             db = SQLiteDatabase.openOrCreateDatabase(dbFile, null);
             create();
         }
