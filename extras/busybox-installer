@@ -1,7 +1,0 @@
-#!/bin/sh
-
-tools/adb remount
-tools/adb push ~/Documents/AIOS/busybox /system/xbin/busybox
-tools/adb shell chmod 4755 /system/xbin/busybox
-tools/adb shell /system/xbin/busybox --install -s /system/xbin/
-echo "Busybox installed!"
