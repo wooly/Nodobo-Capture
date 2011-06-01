@@ -1,33 +1,32 @@
 package com.nodobo.capture;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-// import android.os.ChargingManager;
+import android.database.sqlite.SQLiteDatabase;
 
-import java.lang.StringBuilder;
-
-public class ChargingStateReceiver extends BroadcastReceiver
+public class ChargingStateReceiver extends AbstractNodoboReceiver
 {
     private final String TAG = "ChargingStateReceiver";
     private final String kind = "power";
     private String generator;
     private String data;
     
+    public ChargingStateReceiver(SQLiteDatabase db)
+    {
+        super(db);
+    }
+    
     @Override
     public void onReceive(Context context, Intent intent)
     {
+	    generator = this.getClass().getName();
+	    String state = "unknown";
+
         if (intent.getAction().equals(Intent.ACTION_POWER_CONNECTED))
-        {
-		    Logger.log("ContextCapture", "Charging: " + "connected");
-		    generator = this.getClass().getName();
-		    Clue clue = new Clue(kind, generator, "connected");
-        }
+            state = "connected";
         else if (intent.getAction().equals(Intent.ACTION_POWER_DISCONNECTED))
-        {
-            Logger.log("ContextCapture", "Charging: " + "disconnected");
-		    generator = this.getClass().getName();
-		    Clue clue = new Clue(kind, generator, "disconnected");
-        }
+            state = "disconnected";
+
+	    Clue clue = new Clue(mDb, kind, generator, state, System.currentTimeMillis());
     }
 }

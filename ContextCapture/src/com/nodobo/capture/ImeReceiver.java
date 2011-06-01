@@ -1,31 +1,35 @@
 package com.nodobo.capture;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+import android.database.sqlite.SQLiteDatabase;
 
 import java.lang.StringBuilder;
 
-public class ImeReceiver extends BroadcastReceiver
+public class ImeReceiver extends AbstractNodoboReceiver
 {
     private final String TAG = "ImeReceiver";
     private final String kind = "keyboard";
     private final String generator = "ImeReceiver";
     private String data;
     
+    public ImeReceiver(SQLiteDatabase db)
+    {
+        super(db);
+    }
+    
     @Override
     public void onReceive(Context context, Intent intent)
     {
         if (intent.getAction().equals("com.nodobo.intent.ime.visible"))
         {
-            Clue clue = new Clue(kind, generator, "visible");
-            Log.d(TAG, "Caught signal: IME visible");
+            Clue clue = new Clue(mDb, kind, generator, "visible", System.currentTimeMillis());
+            Logger.log(TAG, "Caught signal: IME visible");
         }
         if (intent.getAction().equals("com.nodobo.intent.ime.invisible"))
         {
-            Clue clue = new Clue(kind, generator, "invisible");
-            Log.d(TAG, "Caught signal: IME invisible");
+            Clue clue = new Clue(mDb, kind, generator, "invisible", System.currentTimeMillis());
+            Logger.log(TAG, "Caught signal: IME invisible");
         }
         if (intent.getAction().equals("com.nodobo.intent.ime.keypress"))
         {
@@ -41,8 +45,8 @@ public class ImeReceiver extends BroadcastReceiver
                 case 32: data = "<space>"; break;
                 default: data = "" + (char) key; break;
             }
-            Clue clue = new Clue("keypress", generator, data, intent.getLongExtra("time", 0));
-            Log.d(TAG, "Caught signal: IME press - " + data);
+            Clue clue = new Clue(mDb, "keypress", generator, data, intent.getLongExtra("time", 0));
+            Logger.log(TAG, "Caught signal: IME press - " + key);
         }
     }
 }

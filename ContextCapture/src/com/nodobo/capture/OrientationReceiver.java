@@ -1,25 +1,24 @@
 package com.nodobo.capture;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 
-import java.lang.StringBuilder;
-
-public class OrientationReceiver extends BroadcastReceiver
+public class OrientationReceiver extends AbstractNodoboReceiver
 {
     private final String TAG = "OrientationReceiver";
     private final String kind = "orientation";
     private String generator;
     private String data;
     
+    public OrientationReceiver(SQLiteDatabase db)
+    {
+        super(db);
+    }
+    
     @Override
     public void onReceive(Context context, Intent intent)
     {
-        if (intent.getAction().equals("com.nodobo.intent.rotation"))
-        {
-            generator = this.getClass().getName();            
-            Clue clue = new Clue(kind, generator, "" + intent.getIntExtra("state", -1), intent.getLongExtra("time", -1));
-        }
+        Clue clue = new Clue(mDb, kind, this.getClass().getName(), "" + intent.getIntExtra("state", -1), intent.getLongExtra("time", -1));
     }
 }

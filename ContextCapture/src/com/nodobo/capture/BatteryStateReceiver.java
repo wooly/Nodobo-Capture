@@ -1,18 +1,21 @@
 package com.nodobo.capture;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.BatteryManager;
 
-import java.lang.StringBuilder;
-
-public class BatteryStateReceiver extends BroadcastReceiver
+public class BatteryStateReceiver extends AbstractNodoboReceiver
 {
     private final String TAG = "BatteryStateReceiver";
     private final String kind = "battery";
     private String generator;
     private String data;
+    
+    public BatteryStateReceiver(SQLiteDatabase db)
+    {
+        super(db);
+    }
     
     @Override
     public void onReceive(Context context, Intent intent)
@@ -25,9 +28,8 @@ public class BatteryStateReceiver extends BroadcastReceiver
             if (rawlevel >= 0 && scale > 0)
                 level = (rawlevel * 100) / scale;
 		    
-		    Logger.log("ContextCapture", "Battery level: " + level);
 		    generator = this.getClass().getName();
-		    Clue clue = new Clue(kind, generator, "" + level);
+            Clue clue = new Clue(mDb, kind, generator, "" + level, System.currentTimeMillis());
         }
     }
 }
